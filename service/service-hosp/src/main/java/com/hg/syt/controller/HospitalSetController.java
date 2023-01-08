@@ -1,5 +1,6 @@
 package com.hg.syt.controller;
 
+import com.hg.common.result.Result;
 import com.hg.syt.model.hosp.HospitalSet;
 import com.hg.syt.service.HospitalSetService;
 import io.swagger.annotations.Api;
@@ -25,14 +26,16 @@ public class HospitalSetController {
 
     @ApiOperation( value = "查询医院所有设置" )
     @GetMapping("/findAll")
-    public List<HospitalSet> findAll(){
-        return hospitalSetService.list();
+    public Result findAll(){
+        List<HospitalSet> hospitalSets = hospitalSetService.list();
+        return Result.ok( hospitalSets );
     }
 
     @ApiOperation( value = "逻辑删除医院设置" )
     @DeleteMapping("/{id}")
-    public boolean removeHospitalById( @PathVariable("id") Long id ){
-        return hospitalSetService.removeById( id );
+    public Result removeHospitalById( @PathVariable("id") Long id ){
+        boolean flag = hospitalSetService.removeById( id );
+        return flag ? Result.ok() : Result.fail();
     }
 }
 
