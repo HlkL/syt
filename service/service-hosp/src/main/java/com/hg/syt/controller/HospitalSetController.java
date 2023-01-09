@@ -21,6 +21,7 @@ import java.util.List;
 @Api( tags = "医院设置管理" )
 @RestController
 @RequestMapping( "/admin/hosp/hospitalSet" )
+@CrossOrigin
 public class HospitalSetController {
 
     @Resource
