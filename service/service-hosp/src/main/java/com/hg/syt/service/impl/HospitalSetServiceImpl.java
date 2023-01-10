@@ -1,6 +1,5 @@
 package com.hg.syt.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hg.common.result.Result;
@@ -10,6 +9,7 @@ import com.hg.syt.model.hosp.HospitalSet;
 import com.hg.syt.service.HospitalSetService;
 import com.hg.syt.vo.hosp.HospitalSetQueryVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Random;
 
@@ -28,12 +28,14 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
 
         //创建page对象
         Page<HospitalSet> page = new Page<>( current, limit );
-        //条件构造器
-        QueryWrapper<HospitalSet> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like( hospitalSetQueryVo.getHosname() != null, "hosname", hospitalSetQueryVo.getHosname() )
-                .eq( hospitalSetQueryVo.getHoscode() != null, "hoscode", hospitalSetQueryVo.getHoscode() );
 
-        return this.page( page, queryWrapper );
+        String hosname = hospitalSetQueryVo.getHosname();
+        String hoscode = hospitalSetQueryVo.getHoscode();
+
+        //TODO BUG: 不能使用医院名称模糊查询
+        return this.query().like( !StringUtils.isEmpty( hosname ), "hosname", hospitalSetQueryVo.getHosname() )
+                .eq( !StringUtils.isEmpty( hoscode ), "hoscode", hospitalSetQueryVo.getHoscode() )
+                .page( page );
     }
 
     @Override
