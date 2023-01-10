@@ -14,7 +14,7 @@ spring:
     active: dev  # 环境设置：dev、test、prod
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://43.139.96.22:3306/yygh_hosp?&useSSL=false
+    url: jdbc:mysql://43.139.96.22:3306/yygh_hosp?&useSSL=false&useUnicode=true&characterEncoding=utf8
     username: root
     password: admin
 #返回json的全局时间格式
@@ -41,3 +41,8 @@ spring:
 #    port:
 #    username:
 #    password:
+
+#  日志的方式打印sql
+logging:
+  level:
+    com.hg.syt.mapper: DEBUG
