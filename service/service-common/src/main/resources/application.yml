@@ -45,4 +45,4 @@ spring:
 #  日志的方式打印sql
 logging:
   level:
-    com.hg.syt.mapper: DEBUG
+    com.hg.common.mapper: DEBUG
