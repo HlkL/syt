@@ -6,6 +6,7 @@ import com.hg.syt.model.cmn.Dict;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author HG
@@ -17,7 +18,7 @@ public interface DictService extends IService<Dict> {
      * @param id id
      * @return 结果集
      */
-    Result findDictChildDataById( Long id );
+    List<Dict> findDictChildDataById( Long id );
 
     /**
      * 数据字典数据导出

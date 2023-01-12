@@ -10,6 +10,8 @@ import com.hg.syt.model.cmn.Dict;
 import com.hg.syt.vo.cmn.DictEeVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,8 +31,9 @@ import java.util.stream.Collectors;
 @Service
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
+    @Cacheable(value = "dict",keyGenerator = "keyGenerator")
     @Override
-    public Result findDictChildDataById( Long id ) {
+    public List<Dict> findDictChildDataById( Long id ) {
 
         //查询字段数据
         List<Dict> dictList = this.query().eq( "parent_id", id ).list();
@@ -43,7 +46,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
                 dict.setHasChildren( false );
             }
         } );
-        return Result.ok( dictList );
+        return dictList;
     }
 
     @Override
@@ -72,6 +75,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         }
     }
 
+    @CacheEvict(value = "dict", allEntries=true)
     @Override
     public Result importData( MultipartFile multipartFile ) {
         try {

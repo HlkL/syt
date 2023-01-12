@@ -29,7 +29,7 @@ public class DictController {
     @ApiOperation( value = "根据id查询子字段数据")
     @GetMapping("/findChildData/{id}")
     public Result findDictChildDataById( @PathVariable("id") Long id ){
-        return dictService.findDictChildDataById( id );
+        return Result.ok(dictService.findDictChildDataById( id ));
     }
 
     @ApiOperation(value="字典数据导出")

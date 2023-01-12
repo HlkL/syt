@@ -21,6 +21,21 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+# redis配置
+  redis:
+    host: 43.139.96.22
+    port: 6379
+    timeout: 1800000
+    database: 0
+    #最大阻塞等待时间(负数表示没限制)
+    lettuce:
+      pool:
+        max-wait: -1
+        max-active: 20
+        max-idle: 5
+        min-idle: 0
+        time-between-eviction-runs: 10s
+
 ##naocs
 #  cloud:
 #    nacos:
