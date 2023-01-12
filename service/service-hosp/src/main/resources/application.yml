@@ -21,7 +21,15 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-##naocs
+  data:
+    mongodb:
+      uri: mongodb://43.139.96.22/yygh_hosp
+
+#
+#  data:
+#    mongodb:
+#      auto-index-creation: false
+#naocs
 #  cloud:
 #    nacos:
 #      discovery:
@@ -30,12 +38,7 @@ spring:
 #    sentinel:
 #      transport:
 #        dashboard: http://127.0.0.1:8858
-##mongodb
-#  data:
-#    mongodb:
-#      host: 127.0.0.1
-#      port: 2701
-#      database: ss
+
 #  rabbitmq:
 #    host:
 #    port:
@@ -46,3 +49,4 @@ spring:
 logging:
   level:
     com.hg.syt.mapper: DEBUG
+    com.hg.syt.repository: DEBUG
