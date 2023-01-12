@@ -1,6 +1,5 @@
 package com.hg.manage.service;
 
-import java.io.IOException;
 import java.util.Map;
 
 public interface HospitalService {
