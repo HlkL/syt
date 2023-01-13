@@ -23,4 +23,6 @@ public interface HospitalSetService extends IService<HospitalSet> {
     Result saveHospSet( HospitalSet hospitalSet );
 
     Result sendSecretKey( Long id );
+
+    String getSignKey( String hoscode );
 }

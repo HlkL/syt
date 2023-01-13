@@ -59,6 +59,12 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
         //TODO 发送短信
         return Result.ok( hospitalSet.getSignKey() );
     }
+
+    @Override
+    public String getSignKey( String hoscode ) {
+        HospitalSet hospitalSet = this.query().eq( "hoscode", hoscode ).one();
+        return hospitalSet.getSignKey();
+    }
 }
 
 
