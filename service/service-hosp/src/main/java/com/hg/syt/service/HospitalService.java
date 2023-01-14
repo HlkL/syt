@@ -39,4 +39,18 @@ public interface HospitalService {
      * @return
      */
     Page selectPage( Integer page, Integer limit, HospitalQueryVo hospitalQueryVo );
+
+    /**
+     * 更新医院状态
+     * @param id id
+     * @param status 状态
+     */
+    void updateHospStatus( String id, Integer status );
+
+    /**
+     * 根据id获取医院信息
+     * @param id id
+     * @return map
+     */
+    Map<String, Object> getHospById( String id );
 }
