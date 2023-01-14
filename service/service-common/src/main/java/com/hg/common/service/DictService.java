@@ -32,4 +32,19 @@ public interface DictService extends IService<Dict> {
      * @return 响应结果
      */
     Result importData( MultipartFile multipartFile );
+
+    /**
+     * 获取数据字典名称
+     * @param dictCode dictCode
+     * @param value value
+     * @return 字典名称
+     */
+    String getDictName( String dictCode, String value );
+
+    /**
+     * 根据dict_cod获取其子节点
+     * @param dictCode dictCode
+     * @return 子节点集合
+     */
+    List<Dict> getChildNode( String dictCode );
 }

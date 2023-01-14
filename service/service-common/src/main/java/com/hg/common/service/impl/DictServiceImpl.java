@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -39,13 +40,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         List<Dict> dictList = this.query().eq( "parent_id", id ).list();
 
         //是否有子字段
-        dictList.forEach( dict -> {
-            if ( this.isChild( dict.getId() ) ) {
-                dict.setHasChildren( true );
-            }else {
-                dict.setHasChildren( false );
-            }
-        } );
+        dictList.forEach( dict -> dict.setHasChildren( this.isChild( dict.getId() ) ) );
         return dictList;
     }
 
@@ -79,7 +74,9 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     @Override
     public Result importData( MultipartFile multipartFile ) {
         try {
-            EasyExcel.read( multipartFile.getInputStream(), DictEeVo.class,new EasyExcelListener( baseMapper ) )
+            EasyExcel.read( multipartFile.getInputStream(),
+                            DictEeVo.class,
+                            new EasyExcelListener( baseMapper ) )
                     .sheet().doRead();
         } catch ( IOException e ) {
             throw new RuntimeException( e );
@@ -88,6 +85,35 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         return Result.ok( "数据导入成功" );
     }
 
+    @Override
+    public String getDictName( String dictCode, String value ) {
+        if ( StringUtils.isEmpty( dictCode ) ) {
+            Dict dict = this.query().eq( "value", value ).one();
+            return dict.getName();
+        }
+        //根据dictCode获取dict对象
+        Dict dict = this.query().eq( "dict_code", dictCode ).one();
+        //将dict对象的id作为parent_id结合value确认dict对象
+        Long parentId = dict.getId();
+
+        return this.query().eq( "value", value )
+                .eq( "parent_id", parentId )
+                .one().getName();
+    }
+
+    @Override
+    public List<Dict> getChildNode( String dictCode ) {
+        //获取dict对象
+        Dict dict = this.query().eq( "dict_code", dictCode ).one();
+        //通过id查询子节点
+        return this.findDictChildDataById( dict.getId() );
+    }
+
+    /**
+     * 根据id查询当前节点是否存在子节点
+     * @param id id
+     * @return true: 存在
+     */
     private boolean isChild( Long id ) {
         return this.query().eq( "parent_id", id ).count() > 0;
     }

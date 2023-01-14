@@ -2,13 +2,16 @@ package com.hg.common.controller;
 
 import com.hg.common.result.Result;
 import com.hg.common.service.DictService;
+import com.hg.syt.model.cmn.Dict;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author hougen
@@ -39,8 +42,7 @@ public class DictController {
     }
 
     /**
-     * element-ui文件上传默认名称为file
-     * @param file
+     * @param file element-ui文件上传默认名称为file
      * @return
      */
     @ApiOperation( "导入字典数据" )
@@ -49,6 +51,28 @@ public class DictController {
         return dictService.importData( file );
     }
 
+    @ApiOperation(value="获取数据字典名称")
+    @GetMapping(value = "/getName/{dictCode}/{value}")
+    public String getName( @PathVariable("dictCode")String dictCode,
+                           @PathVariable("value")String value ){
+
+        return dictService.getDictName( dictCode,value );
+    }
+
+    @ApiOperation(value="获取数据字典名称")
+    @GetMapping(value = "/getName/{value}")
+    public String getName( @PathVariable("value")String value ){
+
+        return dictService.getDictName( "",value );
+    }
+
+    @ApiOperation(value="根据dict_code查询其子节点")
+    @GetMapping(value = "/findNode/{dictCode}")
+    public Result queryChildNodeByDictCode( @PathVariable("dictCode")String dictCode ){
+
+        List<Dict> childNodes = dictService.getChildNode( dictCode );
+        return Result.ok( childNodes );
+    }
 }
 
 

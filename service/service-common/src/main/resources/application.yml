@@ -9,7 +9,7 @@ mybatis-plus:
 # 服务名
 spring:
   application:
-    name: service-hosp
+    name: service-common
   profiles:
     active: dev  # 环境设置：dev、test、prod
   datasource:
@@ -37,10 +37,10 @@ spring:
         time-between-eviction-runs: 10s
 
 ##naocs
-#  cloud:
-#    nacos:
-#      discovery:
-#        server-addr: 127.0.0.1:8848
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 ##sentinel
 #    sentinel:
 #      transport:
