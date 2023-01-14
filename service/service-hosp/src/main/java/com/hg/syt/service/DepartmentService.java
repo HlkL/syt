@@ -36,5 +36,7 @@ public interface DepartmentService {
      * @return 所有科室信息
      */
     List<DepartmentVo> queryAllDeptByHospCode( String hoscode );
+
+    Object getDepName( String hoscode, String depcode );
 }
 
