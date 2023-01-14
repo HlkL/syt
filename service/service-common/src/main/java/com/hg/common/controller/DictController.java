@@ -23,7 +23,7 @@ import java.util.List;
 @Api( tags = "数据字典管理" )
 @RestController
 @RequestMapping( "/admin/common/dict" )
-@CrossOrigin
+//@CrossOrigin
 public class DictController {
 
     @Resource
