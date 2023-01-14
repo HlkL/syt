@@ -78,7 +78,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.setIsDeleted( 0 );
 
         //分页构造器
-        PageRequest pageRequest = PageRequest.of( page, limit );
+        PageRequest pageRequest = PageRequest.of( page - 1, limit );
         //创建ExampleMatcher对象
         ExampleMatcher exampleMatcher = ExampleMatcher.matching()
                 .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING )
