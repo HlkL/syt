@@ -53,4 +53,6 @@ public interface HospitalService {
      * @return map
      */
     Map<String, Object> getHospById( String id );
+
+    String getHospName( String hoscode );
 }
