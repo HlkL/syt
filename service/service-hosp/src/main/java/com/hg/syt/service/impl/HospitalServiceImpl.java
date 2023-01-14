@@ -5,17 +5,24 @@ import com.hg.common.exception.SytException;
 import com.hg.common.helper.HttpRequestHelper;
 import com.hg.common.result.ResultCodeEnum;
 import com.hg.common.utils.MD5;
+import com.hg.feign.client.DictFeignClient;
 import com.hg.syt.model.hosp.Hospital;
+import com.hg.syt.model.hosp.Schedule;
 import com.hg.syt.repository.HospitalRepository;
 import com.hg.syt.service.HospitalService;
 import com.hg.syt.service.HospitalSetService;
+import com.hg.syt.vo.hosp.HospitalQueryVo;
+import com.hg.syt.vo.hosp.ScheduleQueryVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,6 +40,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Resource
     private HospitalSetService hospitalSetService;
+
+    @Resource
+    private DictFeignClient dictFeignClient;
 
     @Override
     public void save( HttpServletRequest request ) {
@@ -95,6 +105,65 @@ public class HospitalServiceImpl implements HospitalService {
             throw new SytException( ResultCodeEnum.SIGN_ERROR );
         }
         return map;
+    }
+
+    @Override
+    public Page selectPage( Integer page, Integer limit, HospitalQueryVo hospitalQueryVo ) {
+
+        Hospital hospital = new Hospital();
+        BeanUtils.copyProperties( hospitalQueryVo,hospital );
+
+        Sort sort = Sort.by( Sort.Direction.DESC, "createTime");
+        //分页构造器
+        PageRequest pageRequest = PageRequest.of( page - 1, limit,sort );
+        //创建ExampleMatcher对象
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withStringMatcher( ExampleMatcher.StringMatcher.CONTAINING )
+                .withIgnoreCase( true );
+
+        Example<Hospital> example = Example.of( hospital, exampleMatcher );
+
+        Page<Hospital> hospitalPage = hospitalRepository.findAll( example, pageRequest );
+
+        //医院等级封装
+        hospitalPage.getContent().forEach( this::setHospitalHospType );
+
+        return hospitalPage;
+    }
+
+    @Override
+    public void updateHospStatus( String id, Integer status ) {
+        Hospital hospital = hospitalRepository.findById( id ).get();
+        hospital.setStatus( status );
+        hospital.setUpdateTime( new Date() );
+        hospitalRepository.save( hospital );
+    }
+
+    @Override
+    public Map<String, Object> getHospById( String id ) {
+        Hospital hospital = hospitalRepository.findById( id ).get();
+        this.setHospitalHospType( hospital );
+        HashMap<String, Object> result = new HashMap<>( 2 );
+
+        result.put( "hospital",hospital );
+        result.put( "bookingRule",hospital.getBookingRule() );
+        hospital.setBookingRule( null );
+        return result;
+    }
+
+    /**
+     * 医院等级设置
+     */
+    private void setHospitalHospType( Hospital hospital ){
+        //根据dictCode和value获取医院等级名称
+        String hospTypeString = dictFeignClient.getName( "Hostype", hospital.getHostype() );
+        //获取省 市 地区
+        String province = dictFeignClient.getName( hospital.getProvinceCode() );
+        String city = dictFeignClient.getName( hospital.getCityCode() );
+        String district = dictFeignClient.getName( hospital.getDistrictCode() );
+
+        hospital.getParam().put( "hospTypeString",hospTypeString );
+        hospital.getParam().put( "addressString",province+city+district );
     }
 
 }
