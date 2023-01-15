@@ -5,6 +5,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author hougen
  * @program syt_parent
@@ -21,6 +23,9 @@ public interface HospitalRepository extends MongoRepository<Hospital,String> {
      * @return
      */
     Hospital getHospitalByHoscode( String hoscode );
+
+    List<Hospital> findHospitalByHosnameLike( String hosname );
+
 }
 
 

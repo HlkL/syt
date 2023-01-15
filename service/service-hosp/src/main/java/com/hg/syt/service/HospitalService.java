@@ -55,4 +55,11 @@ public interface HospitalService {
     Map<String, Object> getHospById( String id );
 
     String getHospName( String hoscode );
+
+    /**
+     * 获取医院预约挂号详情
+     * @param hospCode 医院编号
+     * @return 挂号详情
+     */
+    Map<String, Object> getHospDetailsByHospCode( String hospCode );
 }

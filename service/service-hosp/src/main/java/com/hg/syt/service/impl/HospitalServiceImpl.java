@@ -142,13 +142,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public Map<String, Object> getHospById( String id ) {
         Hospital hospital = hospitalRepository.findById( id ).get();
-        this.setHospitalHospType( hospital );
-        HashMap<String, Object> result = new HashMap<>( 2 );
-
-        result.put( "hospital",hospital );
-        result.put( "bookingRule",hospital.getBookingRule() );
-        hospital.setBookingRule( null );
-        return result;
+        return setHospitalDetails( hospital );
     }
 
     @Override
@@ -158,6 +152,22 @@ public class HospitalServiceImpl implements HospitalService {
             return hospital.getHosname();
         }
         return null;
+    }
+
+    @Override
+    public Map<String, Object> getHospDetailsByHospCode( String hospCode ) {
+        Hospital hospital = hospitalRepository.getHospitalByHoscode( hospCode );
+        return setHospitalDetails( hospital );
+    }
+
+    private Map<String, Object> setHospitalDetails( Hospital hospital ) {
+        this.setHospitalHospType( hospital );
+        HashMap<String, Object> result = new HashMap<>( 2 );
+
+        result.put( "hospital",hospital );
+        result.put( "bookingRule",hospital.getBookingRule() );
+        hospital.setBookingRule( null );
+        return result;
     }
 
     /**
