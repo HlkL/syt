@@ -23,3 +23,8 @@ spring:
           uri: lb://service-common
           predicates:
             - Path=/*/common/**
+
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/*/user/**
