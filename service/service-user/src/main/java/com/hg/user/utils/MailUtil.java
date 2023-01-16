@@ -26,7 +26,7 @@ public class MailUtil {
     private String from;
 
     private String text( String code ) {
-        return "<div style=\"text-align: center\">" + "<br><br><br><br><br><br><br><br><br><br>" +
+        return "<div style=\"text-align: center\">" + "<br><br><br><br>" +
                     "请在验证码有效期输入验证码完成登录：" +
                     "<span style=\"color: red\">"+ code +"</span>" +
                 "</div>";
