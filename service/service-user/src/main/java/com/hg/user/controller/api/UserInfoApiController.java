@@ -1,4 +1,4 @@
-package com.hg.user.controller;
+package com.hg.user.controller.api;
 
 import com.hg.common.result.Result;
 import com.hg.syt.vo.user.LoginVo;
@@ -13,13 +13,14 @@ import java.util.Map;
 /**
  * @author hougen
  * @program syt_parent
- * @description
- * @create 2023-01-16 01:35
+ * @description 用户邮箱登录api
+ * @create 2023-01-17 15:32
  */
-@Api(tags = "用户管理")
+@Api(tags = "用户邮箱登录API")
 @RestController
-@RequestMapping("/admin/user")
-public class UserInfoController {
+@RequestMapping("/api/user")
+public class UserInfoApiController {
+
 
     @Resource
     private UserInfoService userInfoService;
@@ -39,6 +40,7 @@ public class UserInfoController {
         userInfoService.sendEmailCode( email );
         return Result.ok( "验证码已发送" );
     }
+
 }
 
 
