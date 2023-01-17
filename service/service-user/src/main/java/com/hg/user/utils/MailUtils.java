@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
-public class MailUtil {
+public class MailUtils {
     @Resource
     private JavaMailSender mailSender;
 
