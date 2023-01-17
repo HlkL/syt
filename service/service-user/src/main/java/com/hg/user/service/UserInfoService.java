@@ -20,4 +20,18 @@ public interface UserInfoService extends IService<UserInfo> {
      * @param email
      */
     void sendEmailCode( String email );
+
+    /**
+     * 生成微信登录二维码
+     * @return 生成二维码需要的参数
+     */
+    Map<String,Object> getLoginParam();
+
+    /**
+     * 微信回调接口
+     * @param code
+     * @param state
+     * @return
+     */
+    String WeixinCallBack( String code, String state );
 }
